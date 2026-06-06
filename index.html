@@ -157,12 +157,14 @@
 
         /* Comments Section */
         .comments-section {
-            margin-top: 60px;
-            background-color: #11161d;
-            padding: 30px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+    margin-top: 60px;
+    background-color: #11161d;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    height: auto; /* Forțează caseta să fie atât de lungă cât e nevoie */
+    overflow: visible; /* Elimină complet orice bară de scroll ascunsă */
+}
 
         .comments-section h3 {
             color: var(--text-light);
