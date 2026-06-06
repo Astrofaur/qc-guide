@@ -162,84 +162,18 @@
     padding: 30px;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    height: auto; /* Forțează caseta să fie atât de lungă cât e nevoie */
-    overflow: visible; /* Elimină complet orice bară de scroll ascunsă */
+}
+
+/* OBLIGĂ TOATĂ INTERFAȚA CUSDIS SĂ AIBĂ SPAȚIU MAI MARE DE DESFĂȘURARE */
+.comments-section iframe {
+    min-height: 600px !important; /* Dublează spațiul ca să încapă multe comentarii fără scroll */
+    width: 100% !important;
 }
 
         .comments-section h3 {
             color: var(--text-light);
             font-size: 1.4rem;
             margin-bottom: 20px;
-        }
-
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .comment-form input, .comment-form textarea {
-            background-color: var(--input-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            padding: 12px;
-            color: var(--text-light);
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border 0.3s ease;
-        }
-
-        .comment-form input:focus, .comment-form textarea:focus {
-            outline: none;
-            border-color: var(--redstone-red);
-        }
-
-        .comment-form button {
-            background-color: var(--redstone-red);
-            color: var(--text-light);
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            align-self: flex-start;
-            transition: background 0.3s ease, transform 0.1s ease;
-        }
-
-        .comment-form button:hover {
-            background-color: #e61a1a;
-            box-shadow: 0 0 10px var(--redstone-glow);
-        }
-
-        .comment-form button:active {
-            transform: scale(0.98);
-        }
-
-        .comments-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .comment-card {
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 3px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .comment-author {
-            color: var(--text-light);
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-
-        .comment-text {
-            font-size: 0.95rem;
-            color: #cbd5e1;
         }
 
         footer {
