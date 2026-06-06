@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Beautiful Bug: Demystifying Quasi-Connectivity</title>
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: #1f2833;
+            --text-color: #cbd5e1;
+            --text-light: #ffffff;
+            --redstone-red: #ff2a2a;
+            --redstone-glow: rgba(255, 42, 42, 0.3);
+            --input-bg: #151a21;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            padding: 0 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        h1 {
+            color: var(--text-light);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--redstone-red);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .author {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+
+        .author span {
+            color: var(--redstone-red);
+            font-weight: 600;
+        }
+
+        /* Divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--redstone-red), transparent);
+            margin: 40px 0;
+            border: none;
+        }
+
+        /* Typography */
+        h2 {
+            color: var(--text-light);
+            font-size: 1.6rem;
+            margin: 40px 0 20px 0;
+            padding-left: 15px;
+            border-left: 4px solid var(--redstone-red);
+        }
+
+        p {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+        }
+
+        strong {
+            color: var(--text-light);
+        }
+
+        ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        ol li {
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+
+        /* Image Placeholders (Responsiv) */
+        .image-box {
+            background-color: var(--card-bg);
+            width: 100%;
+            height: auto;
+            min-height: 250px;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            color: var(--text-light);
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .image-box:hover {
+            border-color: var(--redstone-red);
+            box-shadow: 0 0 15px var(--redstone-glow);
+        }
+
+        /* Callout Box */
+        .callout {
+            background: linear-gradient(135deg, #1f2833, #151a21);
+            border-left: 4px solid var(--redstone-red);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 35px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .callout-title {
+            color: var(--text-light);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 60px;
+            background-color: #11161d;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comments-section h3 {
+            color: var(--text-light);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .comment-form input, .comment-form textarea {
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-light);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+
+        .comment-form input:focus, .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--redstone-red);
+        }
+
+        .comment-form button {
+            background-color: var(--redstone-red);
+            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: background 0.3s ease, transform 0.1s ease;
+        }
+
+        .comment-form button:hover {
+            background-color: #e61a1a;
+            box-shadow: 0 0 10px var(--redstone-glow);
+        }
+
+        .comment-form button:active {
+            transform: scale(0.98);
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comment-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .comment-author {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .comment-text {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Ecrane Mici (Telefoane) */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            body {
+                padding: 0 15px;
+            }
+            .container {
+                padding: 20px 0;
+            }
+            .comments-section {
+                padding: 20px;
+            }
+            .comment-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <div class="subtitle">Minecraft Java Redstone Engineering</div>
+            <h1>The Beautiful Bug:<br>Demystifying Quasi-Connectivity</h1>
+            <div class="author">Written by <span>Astrofaur</span></div>
+        </header>
+
+        <hr class="divider">
+
+        <p>Have you ever built a redstone circuit and noticed a piston activating when it clearly shouldn't? If you play on Java Edition, you've likely encountered one of Minecraft’s most famous, useful, and accidental mechanics: <strong>Quasi-Connectivity (QC)</strong>.</p>
+        
+        <p>While Bedrock Edition requires explicit wiring (like running redstone dust under a block to power adjacent components), Java Edition operates under a different set of hidden rules. Let’s break down exactly why this happens and how a coding shortcut from 2011 changed redstone forever.</p>
+
+        <h2>The Mystery Setup</h2>
+        <p>Imagine three vertical pistons with a block of dirt next to the top one. When a redstone signal powers that dirt block, all three pistons extend instantly.</p>
+        <p>The top and middle pistons make sense based on standard redstone proximity. But the bottom piston seems to break the rules. It has no direct signal and no directly powered block touching it. Why does it activate?</p>
+
+        <!-- IMAGINEA 1 -->
+        <div class="image-box">
+            [ Upload Image 1 Here - The Three-Piston Paradox ]
+        </div>
+
+        <h2>It All Starts in Beta 1.7</h2>
+        <p>To find the answer, we have to look at how pistons were introduced. Originally a community-made mod, Mojang loved the concept so much they officially implemented it in Beta 1.7.</p>
+        <p>To program it into the game quickly, developers borrowed a structural logic part from an existing item: <strong>the Iron Door</strong>.</p>
+        <p>An iron door is naturally two blocks tall. Its core algorithm rests in the bottom half. When checking for power, the door asks:</p>
+        <ol>
+            <li>Is the bottom half receiving power? If yes, open.</li>
+            <li>If no, is the top half receiving power? If yes, open.</li>
+        </ol>
+
+        <!-- IMAGINEA 2 -->
+        <div class="image-box">
+            [ Upload Image 2 Here - Iron Door Logic ]
+        </div>
+
+        <h2>The "Ghost Block" and Semi-Activation</h2>
+        <p>Because the piston inherited this iron door code, it behaves mathematically like the bottom half of a two-block-tall structure. Every piston has an "invisible ghost block" directly above it.</p>
+        <p>However, the developers modified the check: the game <strong>skips</strong> the automatic check for that upper invisible block.</p>
+
+        <div class="callout">
+            <div class="callout-title">🧪 The Experiment</div>
+            <p>If you place a lever next to the empty space above an isolated piston and flip it, the piston will NOT extend. It checks its immediate surroundings, finds no power, and doesn't bother checking the ghost block.</p>
+        </div>
+
+        <p>But the link is still there. The piston is now <strong>semi-activated</strong>. It is receiving power through the ghost block, but it is "asleep"—waiting for a reason to re-evaluate its state.</p>
+
+        <!-- IMAGINEA 3 -->
+        <div class="image-box">
+            [ Upload Image 3 Here - The Ghost Block Space ]
+        </div>
+
+        <h2>The Alarm Clock: Block Updates</h2>
+        <p>To wake up a semi-activated piston, you need a <strong>Block Update</strong>. This happens when any adjacent block changes its state (placing/breaking a block, firing an arrow, or modifying a nearby component).</p>
+
+        <div class="callout">
+            <div class="callout-title">⚡ Step-by-Step Activation</div>
+            <ol>
+                <li>The redstone powers the dirt block.</li>
+                <li>The top and middle pistons receive power and activate.</li>
+                <li>The bottom piston is semi-powered via QC through the middle piston's space, but stays asleep.</li>
+                <li><strong>The Trigger:</strong> The middle piston extends. This movement causes a massive block update right next to the bottom piston.</li>
+                <li>The bottom piston "wakes up", realizes it has QC power, and extends.</li>
+            </ol>
+        </div>
+
+        <p>Because the redstone signal and game engine process this uniformly, it happens with zero tick delay, making it look instantaneous.</p>
+
+        <!-- IMAGINEA 4 -->
+        <div class="image-box">
+            [ Upload Image 4 Here - The Instantaenous Block Update ]
+        </div>
+
+        <h2>Conclusion</h2>
+        <p>What was technically a "bug" caused by copied door code turned out to be so immensely useful for compact wiring and computer logic that Mojang decided to keep it as an official feature.</p>
+        <p>Quasi-Connectivity—derived from the Latin for <em>apparent or partial connectivity</em>—is a perfect example of how limitations and accidents in game development can breed a universe of creativity.</p>
+
+        <!-- SECTIUNEA DE COMENTARII -->
+        <div class="comments-section">
+            <h3>Discussion & Comments</h3>
+            
+            <form class="comment-form" id="commentForm">
+                <input type="text" id="authorName" placeholder="Your Name / Minecraft Username" required>
+                <textarea id="commentText" rows="4" placeholder="Join the discussion... Ask a question or share your thoughts!" required></textarea>
+                <button type="submit">Submit Comment</button>
+            </form>
+
+            <div class="comments-list" id="commentsList">
+                <!-- Comentarii implicite (Demo care da viata paginii) -->
+                <div class="comment-card">
+                    <div class="comment-author">RedstoneEnthusiast_99</div>
+                    <div class="comment-text">Wow, I never knew it actually came from the Iron Door code! That explains so much about the 2-block height limit. Great write-up!</div>
+                </div>
+                <div class="comment-card">
+                    <div class="comment-author">M_Engineer</div>
+                    <div class="comment-text">Does this same logic apply to droppers and dispensers? I notice they act weirdly sometimes too.</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 Astrofaur. Created for the SOAR Competition. All Minecraft rights belong to Mojang Studios.
+        </footer>
+
+    </div>
+
+    <!-- Script JavaScript pentru a face comentariile sa functioneze live -->
+    <script>
+        document.getElementById('commentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('authorName');
+            const textInput = document.getElementById('commentText');
+            
+            if(nameInput.value.trim() === '' || textInput.value.trim() === '') return;
+
+            // Creare structura comentariu nou
+            const commentCard = document.createElement('div');
+            commentCard.className = 'comment-card';
+            commentCard.style.borderLeft = '3px solid #ff2a2a'; // Linie rosie pentru comentariile noi
+
+            const commentAuthor = document.createElement('div');
+            commentAuthor.className = 'comment-author';
+            commentAuthor.textContent = nameInput.value;
+
+            const commentText = document.createElement('div');
+            commentText.className = 'comment-text';
+            commentText.textContent = textInput.value;
+
+            commentCard.appendChild(commentAuthor);
+            commentCard.appendChild(commentText);
+
+            // Adaugare la inceputul listei
+            const commentsList = document.getElementById('commentsList');
+            commentsList.insertBefore(commentCard, commentsList.firstChild);
+
+            // Resetare campuri text
+            nameInput.value = '';
+            textInput.value = '';
+        });
+    </script>
+
+</body>
+</html>
