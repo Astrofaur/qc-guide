@@ -354,68 +354,23 @@
 
         <!-- SECTIUNEA DE COMENTARII -->
         <div class="comments-section">
-            <h3>Discussion & Comments</h3>
-            
-            <form class="comment-form" id="commentForm">
-                <input type="text" id="authorName" placeholder="Your Name / Minecraft Username" required>
-                <textarea id="commentText" rows="4" placeholder="Join the discussion... Ask a question or share your thoughts!" required></textarea>
-                <button type="submit">Submit Comment</button>
-            </form>
-
-            <div class="comments-list" id="commentsList">
-                <!-- Comentarii implicite (Demo care da viata paginii) -->
-                <div class="comment-card">
-                    <div class="comment-author">RedstoneEnthusiast_99</div>
-                    <div class="comment-text">Wow, I never knew it actually came from the Iron Door code! That explains so much about the 2-block height limit. Great write-up!</div>
-                </div>
-                <div class="comment-card">
-                    <div class="comment-author">M_Engineer</div>
-                    <div class="comment-text">Does this same logic apply to droppers and dispensers? I notice they act weirdly sometimes too.</div>
-                </div>
-            </div>
-        </div>
+    <h3>Discussion & Comments</h3>
+    
+    <div id="cusdis_thread" 
+         data-host="https://cusdis.com" 
+         data-app-id="1ce6f485-384c-4bdd-94ab-0f44472ce1bb" 
+         data-page-id="qc-guide-main" 
+         data-page-url="https://astrofaur.github.io/qc-guide/" 
+         data-page-title="The Beautiful Bug">
+    </div>
+    <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+</div>
 
         <footer>
             &copy; 2026 Astrofaur. Created for the SOAR Competition. All Minecraft rights belong to Mojang Studios.
         </footer>
 
     </div>
-
-    <!-- Script JavaScript pentru a face comentariile sa functioneze live -->
-    <script>
-        document.getElementById('commentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nameInput = document.getElementById('authorName');
-            const textInput = document.getElementById('commentText');
-            
-            if(nameInput.value.trim() === '' || textInput.value.trim() === '') return;
-
-            // Creare structura comentariu nou
-            const commentCard = document.createElement('div');
-            commentCard.className = 'comment-card';
-            commentCard.style.borderLeft = '3px solid #ff2a2a'; // Linie rosie pentru comentariile noi
-
-            const commentAuthor = document.createElement('div');
-            commentAuthor.className = 'comment-author';
-            commentAuthor.textContent = nameInput.value;
-
-            const commentText = document.createElement('div');
-            commentText.className = 'comment-text';
-            commentText.textContent = textInput.value;
-
-            commentCard.appendChild(commentAuthor);
-            commentCard.appendChild(commentText);
-
-            // Adaugare la inceputul listei
-            const commentsList = document.getElementById('commentsList');
-            commentsList.insertBefore(commentCard, commentsList.firstChild);
-
-            // Resetare campuri text
-            nameInput.value = '';
-            textInput.value = '';
-        });
-    </script>
 
 </body>
 </html>
